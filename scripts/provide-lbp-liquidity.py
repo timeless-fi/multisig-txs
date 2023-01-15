@@ -3,7 +3,6 @@
 from ape_safe import ApeSafe
 from brownie import Contract
 import json
-import brownie
 from brownie.convert import to_string
 import subprocess
 
