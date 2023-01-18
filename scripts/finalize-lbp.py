@@ -31,7 +31,7 @@ def main():
     tokens, balances, last_change_block = bal_vault.getPoolTokens(pool_id)
 
     user_data = to_string(subprocess.check_output(f"cast ae 'foo(uint8,uint256)' 1 {bpt_balance}", shell=True))[:-1]
-    bal_vault.exitPool(pool_id, gov_safe.address, gov_safe.address, ([tokens[0], tokens[1]], [0, 0], user_data, False))
+    bal_vault.exitPool(pool_id, gov_safe.address, gov_safe.address, ([tokens[0], tokens[1]], [balances[0]-1, balances[1]-23741202], user_data, False))
 
     ######################################################################
     # Transfer loan to dev safe
