@@ -1,7 +1,7 @@
 # brownie run scripts/claim-fee-and-bribe.py --network mainnet-fork
 
 from ape_safe import ApeSafe
-from brownie import Contract
+from brownie import Contract, network
 from brownie.convert import to_address
 import json
 import requests
@@ -82,9 +82,44 @@ def main():
         else:
             print(f"Error: {response.status_code}")
 
-    total_weth_amount = weth_contract.balanceOf(gov_safe.address) - before_balances[weth]
+    ######################################################################
+    # Submit transaction to gov Gnosis Safe
+    ######################################################################
 
+    # generate safe tx
+    safe_tx = gov_safe.multisend_from_receipts()
+
+    # sign safe tx
+    gov_safe.sign_with_frame(safe_tx).hex()
+
+    # post tx
+    gov_safe.post_transaction(safe_tx)
+
+    ######################################################################
+    # Halt script until the transaction has been executed
+    ######################################################################
+
+    input("Press Enter to continue once the first transaction has been executed...")
+
+    # fetch the actual weth amount claimed by the first tx (which is likely different from the simulated value)
+    # need to change the network to mainnet (instead of mainnet-fork) to fetch the actual
+    # weth balance of the gov safe
+    network.disconnect()
+    network.connect("mainnet")
+    total_weth_amount = weth_contract.balanceOf(gov_safe.address) - before_balances[weth]
     print(f"Total fee claimed in WETH: {total_weth_amount / 1e18}")
+
+    # change the network back to mainnet-fork to start constructing the second tx
+    network.disconnect()
+    network.connect("mainnet-fork")
+
+    # reset gov safe object to match the new network
+    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+
+    # reset contracts to use the new gov safe account
+    weth_contract = Contract.from_abi("WETH", weth, erc20_abi, gov_safe.account)
+    bunni_bribe = Contract.from_abi(
+        "BunniBribe", "0x78C45fBDB71E7c0FbDfe49bDEFdACDcc4764336f", bunni_bribe_abi, gov_safe.account)
 
     ######################################################################
     # Compute how much bribe each pool deserves
