@@ -20,8 +20,11 @@ def main():
         gauge_controller_abi = json.loads(f.read())
     with open('scripts/abi/BunniBribe.json') as f:
         bunni_bribe_abi = json.loads(f.read())
+    with open('scripts/abi/TimelessLiquidityGauge.json') as f:
+        gauge_abi = json.loads(f.read())
 
     # config
+    swap_slippage = "0.003"
     last_sweep_block = 15743581
     weth = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     tokens = [
@@ -71,7 +74,7 @@ def main():
         if token_amount == 0:
             continue
 
-        url = f"https://api.0x.org/swap/v1/quote?buyToken=WETH&sellToken={token}&sellAmount={token_amount}"
+        url = f"https://api.0x.org/swap/v1/quote?buyToken=WETH&sellToken={token}&sellAmount={token_amount}&slippagePercentage={swap_slippage}"
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -147,7 +150,7 @@ def main():
 
     if response.status_code == 200:
         # filter for pools using tokens we have claimed from BunniHub and have whitelisted gauges
-        current_bunni_tokens = list(filter(lambda x: to_address(x["pool"]["token0"]) in (tokens + [weth]) and to_address(x["pool"]["token1"]) in (tokens + [weth]) and gauge_controller.gauge_exists(to_address(x["gauge"])), response.json()["data"]["bunniTokens"]))
+        current_bunni_tokens = list(filter(lambda x: to_address(x["pool"]["token0"]) in (tokens + [weth]) and to_address(x["pool"]["token1"]) in (tokens + [weth]) and (not Contract.from_abi("Gauge", to_address(x["gauge"]), gauge_abi, gov_safe.account).is_killed()) and gauge_controller.gauge_exists(to_address(x["gauge"])), response.json()["data"]["bunniTokens"]))
         
         query = '''
         query Query($block: Int!) {
@@ -168,7 +171,7 @@ def main():
 
         if response_past.status_code == 200:
              # filter for pools using tokens we have claimed from BunniHub and have whitelisted gauges
-            past_bunni_tokens = filter(lambda x: to_address(x["pool"]["token0"]) in (tokens + [weth]) and to_address(x["pool"]["token1"]) in (tokens + [weth]) and gauge_controller.gauge_exists(to_address(x["gauge"])), response_past.json()["data"]["bunniTokens"])
+            past_bunni_tokens = filter(lambda x: to_address(x["pool"]["token0"]) in (tokens + [weth]) and to_address(x["pool"]["token1"]) in (tokens + [weth]) and (not Contract.from_abi("Gauge", to_address(x["gauge"]), gauge_abi, gov_safe.account).is_killed()) and gauge_controller.gauge_exists(to_address(x["gauge"])), response_past.json()["data"]["bunniTokens"])
 
             bribe_weights = {}
 
