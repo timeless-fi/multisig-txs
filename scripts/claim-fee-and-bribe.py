@@ -25,7 +25,7 @@ def main():
 
     # config
     swap_slippage = "0.003"
-    last_sweep_block = 15743581
+    last_sweep_block = 16891947
     weth = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     tokens = [
         "0xC0c293ce456fF0ED870ADd98a0828Dd4d2903DBF", # AURA
@@ -36,7 +36,10 @@ def main():
         "0x853d955aCEf822Db058eb8505911ED77F175b99e", # FRAX
         "0x5E8422345238F34275888049021821E8E08CAa1f", # frxETH
         "0x111111111117dC0aa78b770fA6A738034120C302", # 1INCH
-        "0x6B175474E89094C44Da98b954EedeAC495271d0F"  # DAI
+        "0x6B175474E89094C44Da98b954EedeAC495271d0F", # DAI
+        "0xf7e945FcE8F19302AaCc7E1418b0A0bdef89327B", # IZE
+        "0x1EA48B9965bb5086F3b468E50ED93888a661fc17", # MON
+        "0x3472A5A71965499acd81997a54BBA8D852C6E53d", # BADGER
     ]
     bribe_vault = "0x9DDb2da7Dd76612e0df237B89AF2CF4413733212"
     subgraph_endpoint = 'https://api.thegraph.com/subgraphs/name/bunniapp/bunni-mainnet'
@@ -171,7 +174,7 @@ def main():
 
         if response_past.status_code == 200:
              # filter for pools using tokens we have claimed from BunniHub and have whitelisted gauges
-            past_bunni_tokens = filter(lambda x: to_address(x["pool"]["token0"]) in (tokens + [weth]) and to_address(x["pool"]["token1"]) in (tokens + [weth]) and (not Contract.from_abi("Gauge", to_address(x["gauge"]), gauge_abi, gov_safe.account).is_killed()) and gauge_controller.gauge_exists(to_address(x["gauge"])), response_past.json()["data"]["bunniTokens"])
+            past_bunni_tokens = list(filter(lambda x: to_address(x["pool"]["token0"]) in (tokens + [weth]) and to_address(x["pool"]["token1"]) in (tokens + [weth]) and (not Contract.from_abi("Gauge", to_address(x["gauge"]), gauge_abi, gov_safe.account).is_killed()) and gauge_controller.gauge_exists(to_address(x["gauge"])), response_past.json()["data"]["bunniTokens"]))
 
             bribe_weights = {}
 
@@ -208,7 +211,8 @@ def main():
             for gauge in bribe_weights.keys():
                 proposal = to_hex(keccak(to_bytes(hexstr=gauge)))
                 bribe_amount = int(total_weth_amount * bribe_weights[gauge] / total_bribe_weight)
-                bunni_bribe.depositBribeERC20(proposal, weth, bribe_amount)
+                if bribe_amount > 0:
+                    bunni_bribe.depositBribeERC20(proposal, weth, bribe_amount)
         else:
             print(f"Error: {response.status_code}")
     else:
