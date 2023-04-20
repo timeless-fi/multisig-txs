@@ -24,8 +24,8 @@ def main():
         gauge_abi = json.loads(f.read())
 
     # config
-    swap_slippage = "0.003"
-    last_sweep_block = 16891947
+    swap_slippage = "0.01"
+    last_sweep_block = 16990954
     weth = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     tokens = [
         "0xC0c293ce456fF0ED870ADd98a0828Dd4d2903DBF", # AURA
@@ -40,6 +40,9 @@ def main():
         "0xf7e945FcE8F19302AaCc7E1418b0A0bdef89327B", # IZE
         "0x1EA48B9965bb5086F3b468E50ED93888a661fc17", # MON
         "0x3472A5A71965499acd81997a54BBA8D852C6E53d", # BADGER
+        "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", # UNI
+        "0x6bB61215298F296C55b19Ad842D3Df69021DA2ef", # DOP
+        "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599", # WBTC
     ]
     bribe_vault = "0x9DDb2da7Dd76612e0df237B89AF2CF4413733212"
     subgraph_endpoint = 'https://api.thegraph.com/subgraphs/name/bunniapp/bunni-mainnet'
