@@ -3,9 +3,6 @@
 from ape_safe import ApeSafe
 from brownie import Contract
 import json
-import brownie
-from brownie.convert import to_string
-import subprocess
 
 def main():
     # configs
@@ -21,7 +18,7 @@ def main():
     
     bunni_hub = Contract.from_abi(
         "BunniHub", "0xb5087F95643A9a4069471A28d32C569D9bd57fE4", bunni_hub_abi, gov_safe.account)
-    new_fee = int(0.5e18)
+    new_fee = int(0.05e18)
     bunni_hub.setProtocolFee(new_fee)
 
     ######################################################################
