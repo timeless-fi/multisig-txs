@@ -1,6 +1,6 @@
 # brownie run scripts/finalize-lbp.py --network mainnet-fork
 
-from ape_safe import ApeSafe
+from brownie_safe import BrownieSafe
 import json
 from brownie import Contract
 from brownie.convert import to_string
@@ -8,8 +8,8 @@ import subprocess
 
 def main():
     # configs
-    dev_safe = ApeSafe("0x39D719fE517Bd73F414A90ed3A14527a5737c8e5")
-    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+    dev_safe = BrownieSafe("0x39D719fE517Bd73F414A90ed3A14527a5737c8e5")
+    gov_safe = BrownieSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
 
     # abis
     with open('scripts/abi/LBP.json') as f:

@@ -1,13 +1,13 @@
 # brownie run scripts/claim-fee-and-distribute-to-velit.py --network mainnet-fork
 
-from ape_safe import ApeSafe
+from brownie_safe import BrownieSafe
 from brownie import Contract, network
 import json
 import requests
 
 def main():
     # configs
-    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+    gov_safe = BrownieSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
 
     # abis
     with open('scripts/abi/BunniHub.json') as f:
@@ -111,7 +111,7 @@ def main():
     network.connect("mainnet-fork")
 
     # reset gov safe object to match the new network
-    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+    gov_safe = BrownieSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
 
     # reset contracts to use the new gov safe account
     weth_contract = Contract.from_abi("WETH", weth, erc20_abi, gov_safe.account)

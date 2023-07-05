@@ -1,12 +1,12 @@
 # brownie run scripts/fix-root-gauge-implementation.py --network mainnet-fork
 
-from ape_safe import ApeSafe
+from brownie_safe import BrownieSafe
 from brownie import Contract
 import json
 
 def main():
     # configs
-    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+    gov_safe = BrownieSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
 
     # abis
     with open('scripts/abi/RootGaugeFactory.json') as f:

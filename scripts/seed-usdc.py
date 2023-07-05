@@ -1,12 +1,12 @@
 # brownie run scripts/seed-usdc.py --network mainnet-fork
 
-import ape_safe
-from ape_safe import ApeSafe
+import brownie_safe
+from brownie_safe import BrownieSafe
 
 def main():
     # configs
-    dev_safe = ApeSafe("0x39D719fE517Bd73F414A90ed3A14527a5737c8e5")
-    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+    dev_safe = BrownieSafe("0x39D719fE517Bd73F414A90ed3A14527a5737c8e5")
+    gov_safe = BrownieSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
 
     ######################################################################
     # Transfer USDC from dev to gov

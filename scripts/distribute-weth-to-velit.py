@@ -1,6 +1,6 @@
 # brownie run scripts/distribute-weth-to-velit.py --network mainnet-fork
 
-from ape_safe import ApeSafe
+from brownie_safe import BrownieSafe
 from brownie import Contract
 import json
 import time
@@ -8,7 +8,7 @@ import requests
 
 def main():
     # configs
-    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+    gov_safe = BrownieSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
 
     # abis
     with open('scripts/abi/ERC20.json') as f:

@@ -1,16 +1,16 @@
 # brownie run scripts/tip-03.py --network mainnet-fork
 
-import ape_safe
-from ape_safe import ApeSafe
+import brownie_safe
+from brownie_safe import BrownieSafe
 import json
 from brownie import Contract
 
 def main():
-    print(ape_safe.__file__)
+    print(brownie_safe.__file__)
 
     # configs
-    eng_safe = ApeSafe("0x798E6af7658A1f20e6B2A5c780D8577D4AEAF7dA")
-    gov_safe = ApeSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
+    eng_safe = BrownieSafe("0x798E6af7658A1f20e6B2A5c780D8577D4AEAF7dA")
+    gov_safe = BrownieSafe("0x9a8FEe232DCF73060Af348a1B62Cdb0a19852d13")
 
     # abis
     with open('scripts/abi/VestingEscrowFactory.json') as f:
