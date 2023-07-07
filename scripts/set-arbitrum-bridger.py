@@ -17,7 +17,7 @@ def main():
     ######################################################################
     
     factory = Contract.from_abi(
-        "RootGaugeFactory", "0xC5C3A1F095aC7cCA8c832FcAe526b3487e343AC2", factory_abi, gov_safe.account)
+        "RootGaugeFactory", "0xe4666F0937B62d64C10316DB0b7061549F87e95F", factory_abi, gov_safe.account)
     factory.set_bridger(42161, "0x093E035e9c2885b1b77B5632F92Fa7593f88E9B3")
 
     ######################################################################
