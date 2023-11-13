@@ -15,7 +15,7 @@ def main():
         gauge_abi = json.loads(f.read())
 
     # config
-    gauges = ["0x082c0198B69e8e321A409A7dC5AD3238E4CD7D81"]
+    gauges = ["0x69da19c1de0bfacd967fa1558a66cf9ee23b9be7"] # GHO-USDC
 
     # contracts
     gauge_controller = Contract.from_abi(
@@ -35,8 +35,6 @@ def main():
     for gauge in gauges:
         gauge_contract = Contract.from_abi("TimelessLiquidityGauge", gauge, gauge_abi, gov_safe.account)
         gauge_contract.set_tokenless_production(20) # 5x max boost
-        weight_cap = int(0.02e18)
-        gauge_contract.setRelativeWeightCap(weight_cap)
 
     ######################################################################
     # Submit transaction to gov Gnosis Safe
